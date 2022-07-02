@@ -2,9 +2,9 @@
 Bokeh https://docs.bokeh.org/en/latest/docs/first_steps/first_steps_9.html
 '''
 
-from bokeh.plotting import figure, show, curdoc
+from bokeh.plotting import figure, curdoc
 from bokeh.layouts import gridplot, layout
-from bokeh.models import Div, RangeSlider, ColumnDataSource
+from bokeh.models import Div, RangeSlider, ColumnDataSource, FileInput
 from matgen import core
 
 filename = 'C:/Users/oubus/Documents/GitHub/Voronoi_DCC_Analyser/tests/test_data/n8-id1-2D.tess'
@@ -53,22 +53,15 @@ range_slider = RangeSlider(
     value=(0, 180),  # initial values for slider
     )
 
+show_filename = filename[filename.rfind('/') + 1:]
+
 div = Div(
-    text=f"""
-          <p>Select {round(range_slider.value[0])}""" +\
-        f""" - {round(range_slider.value[1])}:</p>
-          """,
+    text=f'<h2> {show_filename} </h2>',
     width=200,
     height=30,
 )
 
 def update_data(attrname, new, old):
-
-    div.text = f"""
-          <p>Select {round(range_slider.value[0])}""" +\
-        f""" - {round(range_slider.value[1])}:</p>
-          """
-    
     lt = round(range_slider.value[0])
     ut = round(range_slider.value[1])
     c.reset_special(lt, ut)
