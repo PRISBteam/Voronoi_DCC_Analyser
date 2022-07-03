@@ -7,8 +7,7 @@ from bokeh.layouts import gridplot, layout
 from bokeh.models import Div, RangeSlider, ColumnDataSource, FileInput
 from matgen import core
 
-filename = 'C:/Users/oubus/Documents/GitHub/Voronoi_DCC_Analyser/tests/test_data/n8-id1-2D.tess'
-c = core.CellComplex(filename=filename, measures=True, theta=True)
+# filename = 'C:/Users/oubus/Documents/GitHub/Voronoi_DCC_Analyser/tests/test_data/n8-id1-2D.tess'
 
 def get_xy(v_ids):
     vs = c.get_many('v', v_ids)
@@ -47,16 +46,25 @@ p3.scatter('x', 'y', source=s3)
 
 range_slider = RangeSlider(
     title="Choose theta", # a title to display above the slider
-    start=0,  # set the minimum value for the slider
-    end=180,  # set the maximum value for the slider
+    start=0, # set the minimum value for the slider
+    end=180, # set the maximum value for the slider
     step=5,  # increments for the slider
     value=(0, 180),  # initial values for slider
-    )
+)
 
-show_filename = filename[filename.rfind('/') + 1:]
+def div_change(attrname, new, old):
+    global c
+    c = core.CellComplex(filename=file_input.filename, measures=True, theta=True)
+    div.text = f'<h2> {file_input.filename} </h2>'
+
+file_input = FileInput()
+file_input.on_change('filename', div_change)
+
+# show_filename = filename[filename.rfind('/') + 1:]
 
 div = Div(
-    text=f'<h2> {show_filename} </h2>',
+    # text=f'<h2> {show_filename} </h2>',
+    text='',
     width=200,
     height=30
 )
@@ -89,8 +97,8 @@ grid = gridplot([[p3, p2, p1], [None, p0, None]], width=400, height=400)
 
 layout = layout(
     [
-        [range_slider, div],
-        [grid],
+        [file_input, div, range_slider],
+        [grid]
     ]
 )
 
