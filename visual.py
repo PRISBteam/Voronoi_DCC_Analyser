@@ -58,7 +58,7 @@ show_filename = filename[filename.rfind('/') + 1:]
 div = Div(
     text=f'<h2> {show_filename} </h2>',
     width=200,
-    height=30,
+    height=30
 )
 
 def update_data(attrname, new, old):
@@ -67,17 +67,25 @@ def update_data(attrname, new, old):
     c.reset_special(lt, ut)
 
     x, y = get_xy(c.get_junction_ids_of_type(0))
+    frac = c.get_j_fraction(0)
     s0.data = dict(x=x, y=y)
+    p0.title.text = f'j0 = {frac}'
     x, y = get_xy(c.get_junction_ids_of_type(1))
+    frac = c.get_j_fraction(1)
     s1.data = dict(x=x, y=y)
+    p1.title.text = f'j1 = {frac}'
     x, y = get_xy(c.get_junction_ids_of_type(2))
+    frac = c.get_j_fraction(2)
     s2.data = dict(x=x, y=y)
+    p2.title.text = f'j2 = {frac}'
     x, y = get_xy(c.get_junction_ids_of_type(3))
+    frac = c.get_j_fraction(3)
     s3.data = dict(x=x, y=y)
+    p3.title.text = f'j3 = {frac}'
 
 range_slider.on_change('value', update_data)
 
-grid = gridplot([[p0, p1], [p2, p3]], width=250, height=250)
+grid = gridplot([[p3, p2, p1], [None, p0, None]], width=400, height=400)
 
 layout = layout(
     [
@@ -87,5 +95,3 @@ layout = layout(
 )
 
 curdoc().add_root(layout)
-
-# show(layout)
